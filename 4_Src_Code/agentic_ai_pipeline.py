@@ -120,7 +120,6 @@ class ResearchState(TypedDict):
     # ML Analysis Phase
     ml_topics: List[Dict]
     paper_clusters: Dict
-    citation_predictions: List[Dict]
     ml_quality_scores: List[Dict]
     ml_insights: Dict
     
@@ -1320,54 +1319,6 @@ class MLAgent:
             print(f"  ✗ Clustering failed: {e}")
             return {}
     
-    def predict_citations(self, sources: List[Dict]) -> List[Dict]:
-        """Predict future citation potential using ML"""
-        if not ML_AVAILABLE:
-            return []
-        
-        try:
-            predictions = []
-            
-            for source in sources:
-                # Features for prediction
-                current_citations = source.get("citation_count", 0)
-                
-                # Simple heuristic-based prediction
-                try:
-                    year = int(str(source.get("published", "2023")).split('-')[0])
-                    age = datetime.now().year - year
-                except:
-                    age = 1
-                
-                # Title/summary quality indicators
-                title_length = len(source.get("title", ""))
-                summary_length = len(source.get("summary", ""))
-                
-                # Prediction formula (heuristic)
-                # More citations + recent + good content = higher prediction
-                recency_factor = max(1, 5 - age)
-                quality_factor = min(2.0, (title_length + summary_length) / 500)
-                
-                predicted_citations = int(current_citations * (1 + 0.2 * recency_factor * quality_factor))
-                growth_rate = ((predicted_citations - current_citations) / max(1, current_citations)) * 100
-                
-                predictions.append({
-                    "title": source.get("title", "")[:60],
-                    "current_citations": current_citations,
-                    "predicted_citations_1yr": predicted_citations,
-                    "predicted_growth_rate": round(growth_rate, 1),
-                    "impact_category": "high" if predicted_citations > 100 else "medium" if predicted_citations > 20 else "low"
-                })
-            
-            # Sort by predicted impact
-            predictions.sort(key=lambda x: x["predicted_citations_1yr"], reverse=True)
-            
-            print(f"  ✓ Generated citation predictions for {len(predictions)} papers")
-            return predictions[:10]
-        except Exception as e:
-            print(f"  ✗ Citation prediction failed: {e}")
-            return []
-    
     def ml_quality_scoring(self, sources: List[Dict]) -> List[Dict]:
         """Alternative quality scoring using ML features"""
         if not ML_AVAILABLE:
@@ -1443,15 +1394,11 @@ class MLAgent:
         print("\n[Phase 2] Paper Clustering (K-means)...")
         clusters = self.cluster_papers(sources, n_clusters=3)
         
-        print("\n[Phase 3] Citation Prediction...")
-        predictions = self.predict_citations(sources)
-        
-        print("\n[Phase 4] ML Quality Scoring...")
+        print("\n[Phase 3] ML Quality Scoring...")
         ml_scores = self.ml_quality_scoring(sources)
         
         # Generate insights
         insights = {
-            "top_predicted_paper": predictions[0] if predictions else None,
             "dominant_cluster": max(clusters.get("cluster_sizes", {}).items(), key=lambda x: x[1])[0] if clusters.get("cluster_sizes") else None,
             "top_topic": topics[0] if topics else None,
             "average_ml_score": round(sum(s["ml_score"] for s in ml_scores) / len(ml_scores), 1) if ml_scores else 0
@@ -1462,7 +1409,6 @@ class MLAgent:
         return {
             "ml_topics": topics,
             "paper_clusters": clusters,
-            "citation_predictions": predictions,
             "ml_quality_scores": ml_scores,
             "ml_insights": insights
         }
@@ -1742,15 +1688,6 @@ def print_report(state: ResearchState):
             for cluster_id, theme in clusters.get("cluster_themes", {}).items():
                 size = clusters.get("cluster_sizes", {}).get(cluster_id, 0)
                 print(f"  Cluster {cluster_id} ({size} papers): {', '.join(theme)}")
-        
-        # Citation Predictions
-        predictions = state.get("citation_predictions", [])
-        if predictions:
-            print(f"\n🔮 Top Citation Predictions:")
-            for pred in predictions[:3]:
-                print(f"  • {pred['title']}")
-                print(f"    Current: {pred['current_citations']} → Predicted: {pred['predicted_citations_1yr']} citations")
-                print(f"    Growth: {pred['predicted_growth_rate']}% | Impact: {pred['impact_category']}")
     
     print("\n\n📚 TOP SOURCES")
     print("-" * 80)
@@ -1805,7 +1742,6 @@ def initialize_state(query: str, research_depth: str = "standard") -> ResearchSt
         "trend_analysis": {},
         "ml_topics": [],
         "paper_clusters": {},
-        "citation_predictions": [],
         "ml_quality_scores": [],
         "ml_insights": {},
         "source_quality_avg": 0.0,

@@ -342,20 +342,6 @@ with tab2:
                         papers = clusters.get('clusters', {}).get(cluster_id, [])
                         for paper in papers[:5]:
                             st.markdown(f"- {paper['title']}")
-            
-            # Citation Predictions
-            predictions = result.get('citation_predictions', [])
-            if predictions:
-                st.markdown("### 🔮 Citation Predictions")
-                for pred in predictions[:5]:
-                    col1, col2, col3 = st.columns([3, 1, 1])
-                    with col1:
-                        st.markdown(f"**{pred['title']}**")
-                    with col2:
-                        st.metric("Current", pred['current_citations'])
-                    with col3:
-                        st.metric("Predicted", pred['predicted_citations_1yr'], 
-                                delta=f"{pred['predicted_growth_rate']}%")
         
         # Top Sources
         st.markdown("## 📚 Top Sources")

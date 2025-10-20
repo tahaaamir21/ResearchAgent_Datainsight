@@ -45,7 +45,6 @@ class ResearchState(TypedDict):
     # ML Analysis Phase
     ml_topics: List[Dict]
     paper_clusters: Dict
-    citation_predictions: List[Dict]
     ml_quality_scores: List[Dict]
     ml_insights: Dict
     

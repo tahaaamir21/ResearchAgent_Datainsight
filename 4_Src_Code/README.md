@@ -61,12 +61,10 @@ The platform consists of 7 specialized AI agents:
 - **Techniques**:
   - **LDA Topic Modeling**: Discover hidden topics
   - **K-means Clustering**: Group similar papers
-  - **Citation Prediction**: Predict future impact
   - **Quality Scoring**: ML-based paper assessment
 - **Methods**:
   - `topic_modeling()`: Extract topics using LDA
   - `cluster_papers()`: K-means clustering
-  - `predict_citations()`: Predict future citations
   - `ml_quality_scoring()`: ML-based quality assessment
 
 ### 6. Reporter Agent
