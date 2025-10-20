@@ -51,6 +51,7 @@ st.markdown("""
         padding: 1rem;
         border-radius: 0.5rem;
         border-left: 4px solid #4CAF50;
+        color: #1f1f1f;
     }
     .stProgress > div > div > div > div {
         background-color: #4CAF50;
@@ -61,6 +62,7 @@ st.markdown("""
         border-radius: 0.5rem;
         border: 1px solid #e0e0e0;
         margin-bottom: 0.5rem;
+        color: #1f1f1f;
     }
     .concept-badge {
         display: inline-block;
