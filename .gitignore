@@ -1,0 +1,115 @@
+# ============================================================================
+# .gitignore for Multi-Agent Research Intelligence Platform
+# ============================================================================
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+env.example.local
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+
+# Vector Database (ChromaDB) - Large files
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated Output Files (can be regenerated)
+7_Results/*.png
+7_Results/*.txt
+7_Results/*.json
+report_*.txt
+kg_*.png
+*.png
+*.jpg
+*.jpeg
+
+# Airflow
+airflow.db
+airflow.cfg
+logs/
+dags/__pycache__/
+plugins/__pycache__/
+
+# Large ML Models (if any)
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+models/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Docker
+.dockerignore
+
+# Keep these directories but ignore their contents
+2_Data/raw/*
+2_Data/processed/*
+!2_Data/raw/.gitkeep
+!2_Data/processed/.gitkeep
+6_Models/vectorstore/*
+!6_Models/vectorstore/.gitkeep
+
+# Keep directory structure
+!.gitkeep
+
