@@ -70,6 +70,9 @@ kg_*.png
 *.jpg
 *.jpeg
 
+# Allow demo screenshots
+!8_Demo/screenshots/*.png
+
 # Airflow
 airflow.db
 airflow.cfg
